@@ -10,7 +10,7 @@ class UsuariosController {
         let body = request.body;
         await UsuarioModel.create(body);
         response.status(201).json({
-            message:"Tag criada com sucesso"
+            message:"Usuario criado com sucesso"
         });
             
     }
