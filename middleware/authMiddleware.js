@@ -1,18 +1,31 @@
-// middlewares/authMiddleware.js
 const jwt = require('jsonwebtoken');
+const UsuarioModel = require('../models/UsuarioModel');
 
-const authMiddleware = (req, res, next) => {
-    const token = req.header('Authorization').replace('Bearer ', '');
-    if (!token) {
-        return res.status(401).json({ message: 'Acesso negado, token não fornecido.' });
-    }
-
+const authMiddleware = async (req, res, next) => {
     try {
-        const decoded = jwt.verify(token, 'seuSegredoJWT');
-        req.user = decoded;
+        const authHeader = req.header('Authorization');
+        
+        if (!authHeader) {
+            return res.status(401).send({ error: 'Nenhum token fornecido.' });
+        }
+        
+        const token = authHeader.replace('Bearer ', '');
+        
+        if (!token) {
+            return res.status(401).send({ error: 'Token inválido.' });
+        }
+        
+        const decoded = jwt.verify(token, 'seu-segredo');
+        const user = await UsuarioModel.findByPk(decoded.id);
+        
+        if (!user) {
+            return res.status(401).send({ error: 'Usuário não encontrado.' });
+        }
+        
+        req.user = user;
         next();
-    } catch (err) {
-        res.status(401).json({ message: 'Token inválido.' });
+    } catch (error) {
+        res.status(401).send({ error: 'Falha na autenticação.' });
     }
 };
 
