@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const UsuarioModel = require('../models/UsuarioModel');
+const { jwtSecret } = require('./config'); // Importa o segredo da configuração
 
 const authMiddleware = async (req, res, next) => {
     try {
@@ -15,18 +15,10 @@ const authMiddleware = async (req, res, next) => {
             return res.status(401).send({ error: 'Token inválido.' });
         }
         
-        const decoded = jwt.verify(token, 'seu-segredo');
-        const user = await UsuarioModel.findByPk(decoded.id);
-        
-        if (!user) {
-            return res.status(401).send({ error: 'Usuário não encontrado.' });
-        }
-        
-        req.user = user;
+        const decoded = jwt.verify(token, jwtSecret); // Verifica o token usando o segredo
+        req.user = decoded; // Adiciona os dados decodificados ao objeto `req`
         next();
     } catch (error) {
         res.status(401).send({ error: 'Falha na autenticação.' });
     }
 };
-
-module.exports = authMiddleware;
