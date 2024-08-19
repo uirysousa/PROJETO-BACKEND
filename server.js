@@ -3,7 +3,7 @@ const UsuariosRotas = require('./rotas/UsuariosRotas');
 const CategoriasRotas = require('./rotas/CategoriasRotas');
 const ProdutosRotas = require('./rotas/ProdutosRotas');
 const AuthRotas = require('./rotas/AuthRotas');
-const authMiddleware = require('./middlewares/authMiddleware');
+const authMiddleware = require('./middleware/authMiddleware');
 
 const host = 'localhost';
 const port = 3000;

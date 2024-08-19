@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { jwtSecret } = require('./config'); // Importa o segredo da configuração
+const { jwtSecret } = require('../config'); // Importa o segredo da configuração
 
 const authMiddleware = async (req, res, next) => {
     try {
@@ -22,3 +22,5 @@ const authMiddleware = async (req, res, next) => {
         res.status(401).send({ error: 'Falha na autenticação.' });
     }
 };
+
+module.exports = authMiddleware;
