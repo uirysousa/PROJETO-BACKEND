@@ -1,44 +1,44 @@
-const CategoriaModel = require("../models/CategoriaModel");
+const ProdutosImg = require("../models/ProdutosImg");
 
-class CategoriasController{
+class ProdutosImgController {
     async listar(request, response) {
-        let dados = await CategoriaModel.findAll();
+        let dados = await ProdutosImg.findAll();
         return response.json(dados)
     }
 
     async consultarPorId(request, response) {
         let id = request.params.id;
-        let post = await CategoriaModel.findByPk(id, {
-            attributes: ['id','name', 'slug']
+        let post = await ProdutosImg.findByPk(id, {
+            attributes: ['id','enabled', 'path']
         });
         return response.json(post);
     }
 
     async criar(request, response) {
         let body = request.body;
-        await CategoriaModel.create(body);
+        await ProdutosImg.create(body);
         response.status(201).json({
-            message: "Categoria criado com sucesso"
+            message: "Imagens do Produto criado com sucesso"
         });
     }
 
     async atualizar(request, response) {
         const id = request.params.id;
         const body = request.body;
-        await CategoriaModel.update(body, { where: {id} });
+        await ProdutosImg.update(body, { where: {id} });
         return response.json({
-            message: "Categoria atualizado com sucesso!"
+            message: "Imagens do Produto atualizado com sucesso!"
         })        
     }
 
     async deletar(request, response) {
         const id = request.params.id;
-        await CategoriaModel.destroy({ where: {id} });
+        await ProdutosImg.destroy({ where: {id} });
         return response.json({
-            message: "Categoria deletado com sucesso!"
+            message: "Imagens do Produto deletado com sucesso!"
         })
     }
 }
 
 
-module.exports = CategoriasController;
+module.exports = ProdutosImgController;
