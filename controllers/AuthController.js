@@ -10,6 +10,7 @@ const gerarToken = (user) => {
 };
 
 class AuthController {
+    
     async login(req, res) {
         const { email, password } = req.body;
         const usuario = await UsuarioModel.findOne({ where: { email } });
